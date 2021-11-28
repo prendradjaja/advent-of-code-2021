@@ -1,6 +1,14 @@
 import math
 
-""" Many of these methods work for n dimensions """
+# TODO At what point should I just use numpy?
+
+"""
+This is a library for moving around in a grid. It also contains vector
+operations (add vectors, etc) that may be useful even if not using the "moving
+around in a grid" idea.
+
+Many of these methods work for n dimensions
+"""
 def _make_grid_library(names, rotdir):
     """
     names: e.g. RDLU corresponding to `dirs` below
@@ -33,8 +41,20 @@ def _make_grid_library(names, rotdir):
             return tuple(x+y for x,y in zip(a,b))
 
         @staticmethod
-        def mulvec(vec, s): # TODO At what point should I just use numpy?
+        def subvec(a, b):
+            return tuple(x-y for x,y in zip(a,b))
+
+        @staticmethod
+        def mulvec(vec, s):
             return tuple(x*s for x in vec)
+
+        @staticmethod
+        def divvec(vec, s):
+            return tuple(x/s for x in vec)
+
+        @staticmethod
+        def floordivvec(vec, s):
+            return tuple(x//s for x in vec)
 
         @staticmethod
         def index(mygrid, vec): # In STL: operator.itemgetter
