@@ -254,6 +254,9 @@ def strjoin(items, delimiter=' '):
     '''
     return delimiter.join(str(item) for item in items)
 
+def rangelen(lst):
+    return range(len(lst))
+
 
 # enumerate
 # ascii_lowercase ascii_lowercase
