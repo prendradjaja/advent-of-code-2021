@@ -27,7 +27,7 @@ def main():
             shouldcontinue = False
             first = False
             for pos in energy:
-                if energy[pos] >= 9:
+                if energy[pos] > 9:
                     energy[pos] = float('-inf')
                     last_flashes.append(pos)
                     flashes += 1
@@ -40,12 +40,23 @@ def main():
         for pos in last_flashes:
             energy[pos] = 0
     def show():
-        pass
-    # print('Before any steps:')
+        return
+        for r in range(10):
+            row = ''
+            for c in range(10):
+                val = str(energy[(r, c)])
+                if (r, c) in last_flashes:
+                    val = colored(val, 'red')
+                row += val
+            print(row)
+        print()
+
+
+    print('Before any steps:')
     show()
     for i in range(1000):
         step()
-        # print(f'After step {i+1}:')
+        print(f'After step {i+1}:')
         show()
     print(flashes)
 
