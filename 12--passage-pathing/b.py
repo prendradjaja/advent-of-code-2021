@@ -30,12 +30,12 @@ def count_paths(g, prefix):
 def can_visit_small_cave(prefix, n):
     small_caves = [c for c in prefix if c.islower()]
     return (
-        # never visited this small cave, or
+        # never visited this small cave,
         n not in prefix
 
-        # never revisited any small cave (Once you revisit a small cave, it
-        # equally rules out revisiting this cave and revisiting any cave: So
-        # the "a single small cave can be visited at most twice" constraint
+        # or never revisited any small cave (Once you revisit a small cave, it
+        # equally rules out revisiting this cave and revisiting any small cave:
+        # So the "a single small cave can be visited at most twice" constraint
         # can be expressed in this way)
         or len(small_caves) == len(set(small_caves))
     )
