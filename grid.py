@@ -18,7 +18,7 @@ def _make_grid_library(names, rotdir):
     """
 
     class clazz:  # Not really a class -- can I use a module instead?
-        dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        directions = dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)]
         tovec = { names[i]: vec for (i, vec) in enumerate(dirs) }
         toname = { vec: names[i] for (i, vec) in enumerate(dirs) }
         neighborvecs = neivecs = [
