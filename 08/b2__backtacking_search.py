@@ -6,6 +6,8 @@ from b_common import is_solved
 def solve(patterns_seen):
     return backtracking_search({}, patterns_seen)
 
+solve.name = 'backtracking search'
+
 
 def backtracking_search(assignments, patterns_seen):
     if is_solved(assignments, patterns_seen):

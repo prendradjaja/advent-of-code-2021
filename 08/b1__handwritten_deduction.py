@@ -46,6 +46,8 @@ def solve(patterns_seen):
 
     return assignments
 
+solve.name = 'handwritten deduction'
+
 
 def sort_string(s):
     return ''.join(sorted(s))
