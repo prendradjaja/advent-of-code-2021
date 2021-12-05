@@ -1,6 +1,5 @@
 import sys
 import itertools
-import util
 
 
 def main():

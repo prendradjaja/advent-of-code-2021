@@ -1,5 +1,4 @@
 import sys
-import util
 
 
 def main():
