@@ -33,10 +33,10 @@ def can_visit_small_cave(prefix, n):
         # never visited this small cave,
         n not in prefix
 
-        # or never revisited any small cave (Once you revisit a small cave, it
-        # equally rules out revisiting this cave and revisiting any small cave:
-        # So the "a single small cave can be visited at most twice" constraint
-        # can be expressed in this way)
+        # or never double-visited any small cave (Once you double-visit a small
+        # cave, it equally rules out double-visiting this cave and
+        # double-visiting any small cave: So the "a single small cave can be
+        # visited at most twice" constraint can be expressed in this way)
         or len(small_caves) == len(set(small_caves))
     )
 
