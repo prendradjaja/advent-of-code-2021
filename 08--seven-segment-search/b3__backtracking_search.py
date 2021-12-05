@@ -1,3 +1,11 @@
+"""
+Embarrassing: Backtracking is useful when you can eliminate partial solutions
+as impossible (will never lead to a valid solution) before completing them
+(which eliminates subtrees from your search). I'm not sure if this is possible
+for this problem (TODO: Figure this out), but I didn't do it at all :) So this
+is just brute force with extra steps -- and the runtime reflects this.
+"""
+
 import sys
 
 from b_common import is_solved
