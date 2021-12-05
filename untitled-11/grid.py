@@ -88,6 +88,12 @@ def _make_grid_library(names, rotdir):
             else:
                 return (-x, y)
 
+        @staticmethod
+        def neighbors(pos, diag=False):
+            offsets = clazz.neivecs if diag else clazz.directions
+            for o in offsets:
+                yield clazz.addvec(o, pos)
+
     return clazz
 
 gridsource   = _make_grid_library('RDLU', 1)  # (y, x)! For working with array in source code

@@ -24,9 +24,7 @@ def main():
                     last_flashes.append(pos)
                     total_flash_count += 1
                     # Propagate energy
-                    for offset in grid.neivecs:
-                        npos = grid.addvec(pos, offset)
-                        r, c = npos
+                    for r, c in grid.neighbors(pos, True):
                         if 0 <= r < 10 and 0 <= c < 10:
                             energy[(r, c)] += 1
 
