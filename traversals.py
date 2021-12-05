@@ -65,6 +65,20 @@
         # (implement me)
         pass
 
+
+# Backtracking (DFS)
+
+    def backtracking_search(state):
+        if is_solved(state):
+            return get_solution(state)
+        for child in child_nodes(state):
+            update(state, child)
+            solved = backtracking_search(state)
+            if solution:
+                return solution
+            undo_update(state, child)
+
+
 # Practice problems:
 # https://medium.com/techie-delight/top-25-depth-first-search-dfs-practice-problems-a620f0ab9faf
 # https://medium.com/techie-delight/top-20-breadth-first-search-bfs-practice-problems-ac2812283ab1
