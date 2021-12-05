@@ -2,6 +2,7 @@ import re
 import inspect
 import types
 import itertools
+from collections import Counter
 
 def tee_disableable(*args, **kwargs):
     print(*args, **kwargs) ############### can disable me by commenting out this line
