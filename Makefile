@@ -6,7 +6,7 @@
 # - View the full output
 # - Copy just the last line into my clipboard
 
-.PHONY: run test copy-last
+.PHONY: run test copy-last example
 
 SHELL=/bin/bash
 
@@ -19,3 +19,6 @@ test:
 
 copy-last:
 	python3 s.py | tee >(tail -n1 | pbcopy)
+
+example:
+	@python3 s.py example
