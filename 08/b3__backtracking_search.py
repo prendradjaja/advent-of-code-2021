@@ -3,6 +3,10 @@ import sys
 from b_common import is_solved
 
 
+abcdefg_string = 'abcdefg'
+ABCDEFG_set = set('ABCDEFG')
+
+
 def solve(patterns_seen):
     return backtracking_search({}, patterns_seen)
 
@@ -22,8 +26,9 @@ def backtracking_search(assignments, patterns_seen):
 
 def child_nodes(assignments):
     if len(assignments) == 7:
-        return []
+        return
     else:
-        left = 'abcdefg'[len(assignments)]
-        right_options = sorted(set('ABCDEFG') - set(assignments.values()))
-        return [(left, right) for right in right_options]
+        left = abcdefg_string[len(assignments)]
+        right_options = sorted(ABCDEFG_set - set(assignments.values()))
+        for right in right_options:
+            yield (left, right)

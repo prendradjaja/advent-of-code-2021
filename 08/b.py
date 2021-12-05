@@ -6,8 +6,8 @@ import sys
 import time
 
 import b1__handwritten_deduction as b1
-import b2__backtacking_search as b2
-import b3__try_all_permutations as b3
+import b2__try_all_permutations as b2
+import b3__backtracking_search as b3
 
 from b_common import decode_output
 
