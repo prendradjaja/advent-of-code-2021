@@ -1,6 +1,4 @@
-import fileinput, collections, collections as cl, itertools, itertools as it, math, random, sys, re, string, functools
-from grid import gridsource as grid, gridcustom # *, gridsource, gridcardinal, gridplane
-from util import *
+import sys
 
 
 def main():
@@ -13,6 +11,7 @@ def main():
             if len(digit) in [2, 3, 4, 7]:
                 result += 1
     print(result)
+
 
 if __name__ == '__main__':
     main()
