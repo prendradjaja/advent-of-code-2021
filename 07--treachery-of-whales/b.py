@@ -13,6 +13,9 @@ def main():
 def triangle(n):
     return n * (n + 1) // 2
 
+# Alternate recursive implementation of triangle(). Requires increasing the
+# recursion limit, but totally works.
+#
 # @functools.cache
 # def triangle(n):
 #     if n == 0:
