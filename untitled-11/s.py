@@ -40,7 +40,7 @@ def main():
         for pos in last_flashes:
             energy[pos] = 0
     def show():
-        return
+        # return
         for r in range(10):
             row = ''
             for c in range(10):
@@ -52,13 +52,23 @@ def main():
         print()
 
 
-    print('Before any steps:')
-    show()
-    for i in range(1000):
+    for i in range(100):
         step()
-        print(f'After step {i+1}:')
-        show()
     print(flashes)
+
+    # print('Before any steps:')
+    # show()
+    # for i in range(10):
+    #     step()
+    #     print(f'After step {i+1}:')
+    #     show()
+    # for j in range(9):
+    #     for k in range(10):
+    #         step()
+    #         i += 1
+    #     print(f'After step {i+1}:')
+    #     show()
+    # print(flashes)
 
 if __name__ == '__main__':
     main()
