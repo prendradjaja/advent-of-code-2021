@@ -1,0 +1,23 @@
+Bugs with their fixes:
+
+1. Forgot what the first bug was.
+
+2. Allowed octopi to continue gaining energy after flashing.
+
+  - energy[pos] = 0
+  + energy[pos] = float('inf')
+
+  later, after done propagating:
+  + energy[pos] = 0
+
+3.
+
+  - if energy[pos] >= 9:
+  + if energy[pos] > 9:
+
+4.
+
+  - for i in range(1000):
+  + for i in range(100):
+
+See branch '11'
