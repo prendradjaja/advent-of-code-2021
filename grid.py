@@ -61,6 +61,7 @@ def _make_grid_library(names, rotdir):
             for x in vec:
                 mygrid = mygrid[x]
             return mygrid
+        getindex = index
 
         @staticmethod
         def setindex(mygrid, vec, value):
