@@ -2,15 +2,6 @@ import sys
 from collections import Counter
 from util import consecutives
 
-# NBCCNBBBCBHCB
-# NBBBCNCCNBBNBBBCHBHHBCHB
-# NBBBCNCCNBBNBNBBCHBHHBCHB
-
-
-# linked list
-# array
-# counts??
-
 
 def main():
     f = open(sys.argv[1] if len(sys.argv) > 1 else 'in')
@@ -25,11 +16,11 @@ def main():
     for step in range(40):
         pair_counts = iterate(pair_counts, rules)
 
-    element_counts = to_element_counts(pair_counts, first, last).values()
+    hi, *_, lo = to_element_counts(pair_counts, first, last).most_common()
 
-    answer = max(element_counts) - min(element_counts)
-    answer = int(answer)
-    print(answer)
+    hi_name, hi_count = hi
+    lo_name, lo_count = lo
+    print(hi_count - lo_count)
 
 
 def iterate(pair_counts, rules):
@@ -46,14 +37,20 @@ def iterate(pair_counts, rules):
 
 
 def to_element_counts(pair_counts, first, last):
-    double_counts = Counter()
+    counts = Counter()
     for pair, count in pair_counts.items():
         a, b = pair
-        double_counts[a] += count
-        double_counts[b] += count
-    double_counts[first] += 1
-    double_counts[last] += 1
-    return { key: value / 2 for key, value in double_counts.items() }
+        counts[a] += count
+        counts[b] += count
+    counts[first] += 1
+    counts[last] += 1
+
+    for pair, count in counts.items():
+        new_count = count / 2
+        assert new_count.is_integer()
+        counts[pair] = int(new_count)
+
+    return counts
 
 
 if __name__ == '__main__':

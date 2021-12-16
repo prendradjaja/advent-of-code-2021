@@ -1,15 +1,4 @@
 import sys, collections
-# from grid import gridsource as grid, gridcustom # *, gridsource, gridcardinal, gridplane
-# from util import *
-
-# NBCCNBBBCBHCB
-# NBBBCNCCNBBNBBBCHBHHBCHB
-# NBBBCNCCNBBNBNBBCHBHHBCHB
-
-
-# linked list
-# array
-# counts??
 
 
 def main():
@@ -18,34 +7,21 @@ def main():
     polymer = polymer.strip()
     rules = rules.strip().split('\n')
     rules = dict(rule.split(' -> ') for rule in rules)
+
     for step in range(10):
-        # abcd -> len 4 -> i 3
-        # for i in range(len(polymer) - 2, 0 - 1, -1):
-        #     polymer[i : i+2]
         polymer = iterate(polymer, rules)
+
     hi, *_, lo = collections.Counter(polymer).most_common()
+
     hi_name, hi_count = hi
     lo_name, lo_count = lo
     print(hi_count - lo_count)
 
 
 def iterate(polymer, rules):
-    '''
-    >>> f = open('example')
-    >>> _, rules = f.read().strip().split('\\n\\n')
-    >>> rules = rules.strip().split('\\n')
-    >>> rules = dict(rule.split(' -> ') for rule in rules)
-    >>> iterate('NNCB', rules)
-    'NCNBCHB'
-    >>> iterate('NNCB', rules)
-    'NCNBCHB'
-    >>> iterate('NBCCNBBBCBHCB', rules)
-    'NBBBCNCCNBBNBNBBCHBHHBCHB'
-    '''
     for left, right in rules.items():
         start, end = left
         polymer = replace(polymer, left, start + right.lower() + end)
-        # print(left, right, polymer)
     return polymer.upper()
 
 
