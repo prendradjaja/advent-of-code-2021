@@ -1,5 +1,0 @@
-- for left, right in rules:
-+ for left, right in rules.items():
-
-- s.replace(...)
-+ replace(s, ...)

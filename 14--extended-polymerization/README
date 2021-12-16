@@ -1,0 +1,10 @@
+bugs in part 1:
+  - for left, right in rules:
+  + for left, right in rules.items():
+
+  - s.replace(...)
+  + replace(s, ...)
+
+other approaches to try:
+  . linked list
+  . array (calculate indices)
