@@ -1,0 +1,3 @@
+- bits = bin(nibble)[2:]
++ bits = bin(nibble)[2:].zfill(4)
+

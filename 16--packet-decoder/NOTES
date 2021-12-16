@@ -1,0 +1,13 @@
+standard header:
+    3 bits version
+    3 bits type id
+
+
+type 4: literal
+
+every type != 4: various operators
+    (contains one or more packets (sub-packets))
+    1 bit length id
+        0: length in bits of sub-packets
+        1: number of direct child sub-packets
+    subpackets
