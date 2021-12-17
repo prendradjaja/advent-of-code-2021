@@ -12,25 +12,11 @@ Target = collections.namedtuple('Target', 'xmin xmax ymin ymax')
 def main():
     f = open(sys.argv[1] if len(sys.argv) > 1 else 'in')
     t = Target(*findints(f.read()))
-
-    # print(is_hit((7, 2), t))
-    # print(is_hit((6, 3), t))
-    # print(is_hit((9, 0), t))
-    # print(is_hit((17, -4), t))
-
-    print(max([y for x, y in trajectory((17, 113), t)]))
-
-    # # (show((7, 2), t))
-    # xv = 17
-    # for yv in range(200):
-    #     v = (xv, yv)
-    #     show(v, t)
-    #     print(v, 'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIT' if is_hit(v, t) else 'no')
-    #     input()
-    # # (show((9, 0), t))
-    # # (show((17, -4), t))
-
-
+    for xv in range(t.xmax + 3):
+        for yv in range(t.ymin - 3, -t.ymin + 3):
+            v = (xv, yv)
+            if is_hit(v, t):
+                print(v)
 
 def show(velocity, target):
     pixels = {}
