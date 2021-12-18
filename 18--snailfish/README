@@ -1,0 +1,10 @@
+What a convoluted problem! :)
+
+It ended up being rather "straightforward" (straightforward but
+time-consuming) to solve using lots of inorder traversals.
+
+
+The main thing I ended up having to debug was:
+
+  - print(max(magnitude(add(left,                right))                for left, right in itertools.permutations(sns, 2)))
+  + print(max(magnitude(add(copy.deepcopy(left), copy.deepcopy(right))) for left, right in itertools.permutations(sns, 2)))
