@@ -12,7 +12,7 @@ The key observation for this problem can be seen in an example:
   ....................TTTTTTTTTTT
   ....................TTTTTTTTTTT
 
-Let's pick a somewhat arbitrary initial velocity.
+Let's pick an arbitrary initial velocity that lands in the target area.
 
   initial velocity (xvel,yvel) = 6,2:
 
