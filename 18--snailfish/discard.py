@@ -1,3 +1,9 @@
+'''
+Various functions I didn't end up needing that I might still want (e.g. if I
+want to solve again with a different approach)
+'''
+
+
 def find_rightward_neighbor(pair, sn, *, _pair_found=False):
     '''
     Find the first regular number to the right of PAIR inside SN, if any.

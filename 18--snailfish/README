@@ -1,0 +1,3 @@
+bugs:
+- print(max(magnitude(add(left,                right))                for left, right in itertools.permutations(sns, 2)))
++ print(max(magnitude(add(copy.deepcopy(left), copy.deepcopy(right))) for left, right in itertools.permutations(sns, 2)))

@@ -1,13 +1,18 @@
-import fileinput, collections, collections as cl, itertools, itertools as it, math, random, sys, re, string, functools
-from grid import gridsource as grid, gridcustom # *, gridsource, gridcardinal, gridplane
-from util import *
+import itertools, functools, copy, sys, math
 
 
 def main():
     f = open(sys.argv[1] if len(sys.argv) > 1 else 'in')
     snlist = f.read().strip()
-    my_sum = sum(snlist)
-    print(magnitude(my_sum))
+    sns = [safer_eval(line.strip()) for line in snlist.split('\n')]
+
+    print(
+        'Part 2 answer:',
+        max(
+            magnitude(add(copy.deepcopy(left), copy.deepcopy(right)))
+            for left, right in itertools.permutations(sns, 2)
+        )
+    )
 
 
 def magnitude(sn):
@@ -25,11 +30,6 @@ def safer_eval(s):
         return eval(s)
     else:
         1/0  # unsafe
-
-
-def sum(snlist):
-    sns = [safer_eval(line.strip()) for line in snlist.split('\n')]
-    return functools.reduce(add, sns)
 
 
 def add(sn1, sn2):

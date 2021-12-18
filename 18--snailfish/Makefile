@@ -1,25 +1,18 @@
-# Not really a "real" Makefile. This isn't for any sort of compilation step.
-# It just makes it easy for me to run my code (I have a shortcut for "make" in
-# my text editor.)
-#
-# Piping to tee >(tail -n1 |pbcopy) allows me to simultaneously
-# - View the full output
-# - Copy just the last line into my clipboard
-
-.PHONY: run test copy-last example
+.PHONY: run test example
 
 SHELL=/bin/bash
 
 run:
-	@python3 s.py
-
-test:
-	clear
-	python3 -m doctest s.py
-	python3 -m doctest more_tests.txt
-
-copy-last:
-	python3 s.py | tee >(tail -n1 | pbcopy)
+	@echo With my input;
+	@python3 a.py
+	@python3 b.py
 
 example:
-	@python3 s.py example
+	@echo With example input:
+	@python3 a.py example
+	@python3 b.py example
+
+test:
+	python3 -m doctest a.py
+	python3 -m doctest b.py
+	python3 -m doctest more_tests.txt
