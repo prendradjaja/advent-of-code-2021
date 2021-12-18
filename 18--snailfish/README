@@ -1,11 +1,10 @@
-What a convoluted problem! :)
+What a convoluted problem :) :(
 
-It ended up being rather "straightforward" (straightforward-in-retrospect, but
-time-consuming) to solve using lots of inorder traversals, though it took me
-one or two false starts with other approaches to land on that one. (And I had
-to extend inorder_traversal() twice to support parents then indices --
-definitely not the sort of problem where I more or less know exactly what my
-function signatures will be when I write them.)
+Lots of inorder traversals! It did take me one or two false starts with other
+approaches to land on that one. (And I had to extend inorder_traversal() twice
+to support parents then indices -- definitely not the sort of problem where I
+more or less know exactly what my function signatures will be when I write
+them.)
 
 The main thing I ended up having to debug was:
 
