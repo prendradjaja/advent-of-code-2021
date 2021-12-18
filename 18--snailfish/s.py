@@ -15,19 +15,27 @@ def safer_eval(s):
         1/0  # unsafe
 
 
+def sum(snlist):
+    sns = [safer_eval(line.strip()) for line in snlist.split('\n')]
+    return functools.reduce(add, sns)
+
+
 def add(sn1, sn2):
     unreduced = [sn1, sn2]
     return reduce(unreduced)
 
 
 def reduce(sn):
+    '''
+    >>> reduce([[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]])
+    [[[[0, 7], 4], [[7, 8], [6, 0]]], [8, 1]]
+    '''
     while True:
         exploded, sn = maybe_explode(sn)
-        if exploded:
-            continue
-        splitted, sn = maybe_split(sn)
-        if not splitted:
-            break
+        if not exploded:
+            splitted, sn = maybe_split(sn)
+            if not splitted:
+                break
     return sn
 
 
