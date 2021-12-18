@@ -4,7 +4,7 @@ from util import *
 
 
 def main():
-    f = open(sys.argv[1] if len(sys.argv) > 1 else 'in')
+    f = open(sys.argv[-1] if len(sys.argv) > 1 and sys.argv[-1] != '-' else 'in')
     lines = [l.rstrip('\n') for l in f]
     for line in lines:
         pass

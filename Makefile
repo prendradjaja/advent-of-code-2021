@@ -11,14 +11,16 @@
 SHELL=/bin/bash
 
 run:
-	@python3 s.py
+	@pyx s.py
 
 test:
 	clear
-	python3 -m doctest s.py
+	mkdir -p dist
+	pyxcompile s.py > dist/s.py
+	python3 -m doctest dist/s.py
 
 copy-last:
-	python3 s.py | tee >(tail -n1 | pbcopy)
+	pyx s.py | tee >(tail -n1 | pbcopy)
 
 example:
-	@python3 s.py example
+	@pyx s.py example
