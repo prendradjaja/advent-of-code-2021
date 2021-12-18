@@ -1,0 +1,33 @@
+Some observations:
+
+  - The name 'bits' I use is maybe more naturally 'bits_iter', but 'bits' is so
+    convenient (short)! Actually, I think this would be significantly nicer in
+    a statically typed language, since I could call it 'bits' and let the type
+    be responsible for indicating it's an iterator.
+
+  - The consume-and-increment pattern is a bit repetitive and easy to mess up.
+    Can I DRY that out and make it foolproof?
+
+  - Maybe I should move version and typeid from parse() to parse_*_node().
+
+
+Bug in part 1:
+
+  - bits = bin(nibble)[2:]
+  + bits = bin(nibble)[2:].zfill(4)
+
+
+Pseudo-grammar:
+
+  standard header =
+    3 bits: version +
+    3 bits: type id
+
+  literal packet (type id == 4) =
+    standard header +
+    value in 5-bit chunks as described
+
+  operator packet (type id != 4) =
+    standard header +
+    1 bit: length id
+    sub-packets as described

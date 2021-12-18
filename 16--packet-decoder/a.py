@@ -1,23 +1,40 @@
-import fileinput, collections, collections as cl, itertools, itertools as it, math, random, sys, re, string, functools
-from grid import gridsource as grid, gridcustom # *, gridsource, gridcardinal, gridplane
-from util import *
-import nodes
+import sys
+from types import SimpleNamespace as obj
 
 
-# i REALLY want to use the name 'bits' instead of e.g. 'bits_iter'
-# would be nicer in a statically typed language
+Literal = (lambda version, length, value:
+    obj(
+        type='Literal',
+        version=version,
+        length=length,
+        value=value,
+    ))
 
-# TODO
-# . consume-and-increment?
-# . should version & typeid be in parse() or parse_*_node()?
+Operator = (lambda version, length, children:
+    obj(
+        type='Operator',
+        version=version,
+        length=length,
+        children=children,
+    ))
 
 
 def main():
     f = open(sys.argv[1] if len(sys.argv) > 1 else 'in')
     hexstring = f.read().strip()
 
-    print(parse(to_bits('D2FE28')))
-    print(parse(to_bits('38006F45291200')))
+    tree = parse(to_bits(hexstring))
+
+    print(version_sum(tree))
+
+
+def version_sum(tree):
+    if tree.type == 'Literal':
+        return tree.version
+    elif tree.type == 'Operator':
+        return tree.version + sum(version_sum(c) for c in tree.children)
+    else:
+        1/0
 
 
 def to_bits(hexstring):
@@ -52,9 +69,18 @@ def parse_operator_node(bits, version):  # bits is an iterator
             children_length += child.length
         assert children_length == limit
         my_length += children_length
-        return nodes.Operator(version, my_length, children)
+        return Operator(version, my_length, children)
     else:  # length is count of direct children
-        1/0
+        limit = consume_bits(bits, 11)
+        my_length += 11
+        children_length = 0
+        children = []
+        while len(children) < limit:
+            child = parse(bits)
+            children.append(child)
+            children_length += child.length
+        my_length += children_length
+        return Operator(version, my_length, children)
 
 
 def parse_literal_node(bits, version):  # bits is an iterator
@@ -67,7 +93,7 @@ def parse_literal_node(bits, version):  # bits is an iterator
         my_length += 5
         value_bits.extend(chunk)
     value = to_int(value_bits)
-    return nodes.Literal(version, my_length, value)
+    return Literal(version, my_length, value)
 
 
 def consume_bits(bits, n, *, parseint=True):  # bits is an iterator
@@ -80,7 +106,6 @@ def consume_bits(bits, n, *, parseint=True):  # bits is an iterator
 
 def to_int(bits_finite):
     return int(''.join(str(bit) for bit in bits_finite), 2)
-
 
 
 if __name__ == '__main__':
