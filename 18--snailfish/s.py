@@ -75,7 +75,33 @@ def explode_add(is_left, exploding_pair, sn):
 
 
 def maybe_split(sn):
-    1/0  # not implemented
+    '''
+    >>> maybe_split([[[[0,7],4],[15,[0,13]]],[1,1]])
+    (True, [[[[0, 7], 4], [[7, 8], [0, 13]]], [1, 1]])
+    >>> maybe_split([[[[0,7],4],[[7,8],[0,13]]],[1,1]])
+    (True, [[[[0, 7], 4], [[7, 8], [0, [6, 7]]]], [1, 1]])
+    >>> maybe_split([[[[0,7],4],[[7,8],[6,0]]],[8,1]])
+    (False, [[[[0, 7], 4], [[7, 8], [6, 0]]], [8, 1]])
+    '''
+    for item, parent, index in inorder_traversal(sn, None, None):
+        if isinstance(item, int) and item >= 10:
+            break
+    else:  # not found
+        return False, sn
+
+    parent[index] = split(item)
+
+    return True, sn
+
+
+def split(n):
+    '''
+    >>> split(10)
+    [5, 5]
+    >>> split(11)
+    [5, 6]
+    '''
+    return [math.floor(n / 2), math.ceil(n / 2)]
 
 
 # i think this can be either preorder or inorder (this is preorder)
