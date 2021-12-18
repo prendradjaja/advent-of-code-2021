@@ -13,22 +13,22 @@
 >>> find_4x_nested( [[3,[2,[1,0]]],[6,[5,[4,0]]]] )
 
 
->>> for item, parent in inorder_traversal([[1, 2], [3, 4]], None):
-...     print(item, parent, sep=' -- ')
-1 -- [1, 2]
-[1, 2] -- [[1, 2], [3, 4]]
-2 -- [1, 2]
-[[1, 2], [3, 4]] -- None
-3 -- [3, 4]
-[3, 4] -- [[1, 2], [3, 4]]
-4 -- [3, 4]
+>>> for item, parent, index in inorder_traversal([[1, 2], [3, 4]], None, None):
+...     print(item, parent, index, sep=' -- ')
+1 -- [1, 2] -- 0
+[1, 2] -- [[1, 2], [3, 4]] -- 0
+2 -- [1, 2] -- 1
+[[1, 2], [3, 4]] -- None -- None
+3 -- [3, 4] -- 0
+[3, 4] -- [[1, 2], [3, 4]] -- 1
+4 -- [3, 4] -- 1
 
->>> for item, parent in right_to_left_traversal([[1, 2], [3, 4]], None):
-...     print(item, parent, sep=' -- ')
-4 -- [3, 4]
-[3, 4] -- [[1, 2], [3, 4]]
-3 -- [3, 4]
-[[1, 2], [3, 4]] -- None
-2 -- [1, 2]
-[1, 2] -- [[1, 2], [3, 4]]
-1 -- [1, 2]
+>>> for item, parent, index in right_to_left_traversal([[1, 2], [3, 4]], None, None):
+...     print(item, parent, index, sep=' -- ')
+4 -- [3, 4] -- 1
+[3, 4] -- [[1, 2], [3, 4]] -- 1
+3 -- [3, 4] -- 0
+[[1, 2], [3, 4]] -- None -- None
+2 -- [1, 2] -- 1
+[1, 2] -- [[1, 2], [3, 4]] -- 0
+1 -- [1, 2] -- 0
