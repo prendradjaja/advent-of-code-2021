@@ -1,3 +1,8 @@
+"""
+Not used in my final solution, but was useful for getting to that solution.
+It's pleasant, so I'm keeping it around in the repo :)
+"""
+
 import sys, collections
 from grid import gridsource as grid
 from types import SimpleNamespace as obj
