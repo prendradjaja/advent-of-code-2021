@@ -5,7 +5,19 @@ from util import *
 
 def main():
     f = open(sys.argv[1] if len(sys.argv) > 1 else 'in')
-    f.read().strip()
+    snlist = f.read().strip()
+    my_sum = sum(snlist)
+    print(magnitude(my_sum))
+
+
+def magnitude(sn):
+    if isinstance(sn, int):
+        return sn
+    elif isinstance(sn, list):
+        left, right = sn
+        return 3 * magnitude(left) + 2 * magnitude(right)
+    else:
+        1/0
 
 
 def safer_eval(s):
