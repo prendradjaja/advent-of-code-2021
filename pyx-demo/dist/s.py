@@ -14,6 +14,7 @@ def get_most_common(letters):
 import fileinput, collections, collections as cl, itertools, itertools as it, math, random, sys, re, string, functools
 from grid import gridsource as grid, gridcustom # *, gridsource, gridcardinal, gridplane
 from util import *
+from other import other
 
 
 def main():
@@ -23,7 +24,7 @@ def main():
 
     most_common = get_most_common(letters)
 
-    print(letters, most_common)
+    print(letters, most_common, other)
 
 def baz():
     '''
