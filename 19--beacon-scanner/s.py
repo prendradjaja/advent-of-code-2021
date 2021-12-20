@@ -9,17 +9,22 @@ def main():
     scanners = [parse_section(s) for s in sections]
     dimensions = len(scanners[0][0])
     if dimensions == 2:
-        overlap_needed = 3
-        rotate = rotate2d
-        count_rotations = 4
+        config = obj(
+            overlap_needed = 3,
+            rotate = rotate2d,
+            count_rotations = 4,
+        )
     elif dimensions == 3:
-        overlap_needed = 12
-        rotate = rotate3d  # todo
-        count_rotations = 24
+        config = obj(
+            overlap_needed = 12,
+            rotate = rotate3d,  # todo
+            count_rotations = 24,
+        )
     else:
         1/0  # invalid dim
 
-    print(find_overlap(scanners[0], scanners[1], rotate, count_rotations, overlap_needed))
+    # print(find_overlap_of_scanners(scanners[0], scanners[1], config))
+    print(find_overlapping_scanner(scanners, 0, config))
 
 
 def parse_section(section):
@@ -36,7 +41,10 @@ def rotate2d(point, n):
     return point
 
 
-def find_overlap(s1, s2, rotate, count_rotations, overlap_needed):
+def find_overlap_of_scanners(s1, s2, config):
+    rotate = config.rotate
+    count_rotations = config.count_rotations
+    overlap_needed = config.overlap_needed
     for p1 in s1:
         for p2 in s2:
             for r in range(count_rotations):
@@ -51,6 +59,21 @@ def find_overlap(s1, s2, rotate, count_rotations, overlap_needed):
                 if len(set(n1) & set(n2)) >= overlap_needed:
                     return (True, p1, p2, r)
     return False
+
+
+def find_overlapping_scanner(scanners, index, config):
+    rotate = config.rotate
+    count_rotations = config.count_rotations
+    overlap_needed = config.overlap_needed
+
+    scanner = scanners[index]
+    for i, other_scanner in enumerate(scanners):
+        if i == index:
+            continue
+        has_overlap, *overlap_details = find_overlap_of_scanners(scanner, other_scanner, config)
+        if has_overlap:
+            return (i, *overlap_details)
+    1/0  # Every scanner is guaranteed to have some overlap
 
 
 def center(scanner, origin_beacon):
