@@ -13,13 +13,12 @@ def main():
     f.readline()  # ignore blank line
     raw = [line.rstrip('\n') for line in f.readlines()]
     # raw = ['#.#', '.#.', '###']
-    padding = 4
+    steps = 50
+    padding = steps + 2
     image = Image(raw, padding)
-    image.show()
-    image.step(rules)
-    image.show()
-    image.step(rules)
-    image.show()
+    for i in range(steps):
+        print('step:', i)
+        image.step(rules)
     print(len([None for value in flatten(image.pixels) if value == '#']))
 
 
