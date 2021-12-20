@@ -4,17 +4,19 @@
 
 5 scanners
 
-given two scanners, brute force to search for an overlap:
+x given two scanners, brute force to search for an overlap:
   every beacon from s1 * every beacon from s2 * every possible orientation of s2 * set intersection of beacons from both =
   26 * 26 * 24 * 52 = 800k
 
-given one scanner, brute force to find an overlapping scanner:
+x given one scanner, brute force to find an overlapping scanner:
   every other scanner * brute force to search for an overlap:
   36 * 800k = 29m
 
-brute force every scanner:
+. brute force every scanner:
   every scanner * brute force to find an overlapping scanner:
   37 * 29m = 1b
+
+    . find relative positions i guess
 
 
 'big-example' is:
