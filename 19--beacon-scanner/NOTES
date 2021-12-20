@@ -1,0 +1,31 @@
+24 possible orientations
+26 beacons per scanner
+37 scanners
+
+5 scanners
+
+given two scanners, brute force to search for an overlap:
+  every beacon from s1 * every beacon from s2 * every possible orientation of s2 * set intersection of beacons from both =
+  26 * 26 * 24 * 52 = 800k
+
+given one scanner, brute force to find an overlapping scanner:
+  every other scanner * brute force to search for an overlap:
+  36 * 800k = 29m
+
+brute force every scanner:
+  every scanner * brute force to find an overlapping scanner:
+  37 * 29m = 1b
+
+
+'big-example' is:
+  26 * 26 * 5 * 52 = 200k
+  4 * 200 = 800k (36x smaller)
+  4 * 800k = 3.2m (300x smaller)
+
+  and it took 9 sec with no short-circuiting
+
+  800k nodes / 9 sec = 100kn/sec
+
+  1 billion nodes / (100kn/sec) = 10000 sec = 3 hours
+
+  so i want a speedup of 6x in order to guarantee completion in half an hour
