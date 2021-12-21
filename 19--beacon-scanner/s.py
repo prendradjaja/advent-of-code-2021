@@ -191,19 +191,20 @@ def to_tuple(row_matrix):
 
 # @trace
 def find_overlap_of_scanners(s1, s2, config):
-    rotate = config.rotate
+    # rotate = config.rotate
     count_rotations = config.count_rotations
     overlap_needed = config.overlap_needed
     results = []
     for p1 in s1:
         for p2 in s2:
             for r in range(count_rotations):
+                rotate = rotators[r]
                 # Align p1 and p2
                 n1 = center(s1, p1)
                 n2 = center(s2, p2)
 
                 # Rotate n2 by r
-                n2 = [rotate(beacon, r) for beacon in n2]
+                n2 = [rotate(beacon) for beacon in n2]
 
                 # Check for overlap
                 if len(set(n1) & set(n2)) >= overlap_needed:
