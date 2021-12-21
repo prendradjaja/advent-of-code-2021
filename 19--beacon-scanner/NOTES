@@ -31,3 +31,13 @@ x given one scanner, brute force to find an overlapping scanner:
   1 billion nodes / (100kn/sec) = 10000 sec = 3 hours
 
   so i want a speedup of 6x in order to guarantee completion in half an hour
+
+$ py3 s.py big-example   # with matmul
+(1, (404, -588, -901), (-336, 658, 858), 2)
+(4, (515, 917, -361), (-743, 427, -804), 7)
+
+$ py3 s.py big-example   # with generated code
+(1, (404, -588, -901), (-336, 658, 858), 2)
+(4, (515, 917, -361), (-743, 427, -804), 10)
+
+suspicious...

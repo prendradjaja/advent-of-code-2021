@@ -5,7 +5,7 @@ from matmul import matmul
 import cProfile
 import pstats
 
-PROFILE = True
+PROFILE = False
 
 def trace(f):
     def traced(*args, **kwargs):
@@ -100,11 +100,88 @@ def rotate2d(point, r):
     return to_tuple(matmul([point], rotations2d[r]))
     # return matmul([point], rotations2d[r])[0]
 
+rotators = {
+    0:  lambda point: (point[0], point[1], point[2]),
+    1:  lambda point: (point[2], point[1], -point[0]),
+    2:  lambda point: (-point[0], point[1], -point[2]),
+    3:  lambda point: (-point[2], point[1], point[0]),
+    4:  lambda point: (point[0], point[2], -point[1]),
+    5:  lambda point: (point[2], -point[0], -point[1]),
+    6:  lambda point: (-point[0], -point[2], -point[1]),
+    7:  lambda point: (-point[2], point[0], -point[1]),
+    8:  lambda point: (point[1], point[2], point[0]),
+    9:  lambda point: (point[1], -point[0], point[2]),
+    10: lambda point: (point[1], -point[2], -point[0]),
+    11: lambda point: (point[1], point[0], -point[2]),
+    12: lambda point: (-point[0], point[2], point[1]),
+    13: lambda point: (-point[2], -point[0], point[1]),
+    14: lambda point: (point[0], -point[2], point[1]),
+    15: lambda point: (point[2], point[0], point[1]),
+    16: lambda point: (-point[1], point[2], -point[0]),
+    17: lambda point: (-point[1], -point[0], -point[2]),
+    18: lambda point: (-point[1], -point[2], point[0]),
+    19: lambda point: (-point[1], point[0], point[2]),
+    20: lambda point: (-point[2], -point[1], -point[0]),
+    21: lambda point: (point[0], -point[1], -point[2]),
+    22: lambda point: (point[2], -point[1], point[0]),
+    23: lambda point: (-point[0], -point[1], point[2]),
+}
+
 def rotate3d(point, r):
     '''
     r: Which rotation (0 - 23, inclusive)
     '''
-    return to_tuple(matmul([point], rotations3d[r]))
+    x, y, z = point
+    if r == 0:
+        return (x, y, z)
+    elif r == 1:
+        return (z, y, -x)
+    elif r == 2:
+        return (-x, y, -z)
+    elif r == 3:
+        return (-z, y, x)
+    elif r == 4:
+        return (x, z, -y)
+    elif r == 5:
+        return (z, -x, -y)
+    elif r == 6:
+        return (-x, -z, -y)
+    elif r == 7:
+        return (-z, x, -y)
+    elif r == 8:
+        return (y, z, x)
+    elif r == 9:
+        return (y, -x, z)
+    elif r == 10:
+        return (y, -z, -x)
+    elif r == 11:
+        return (y, x, -z)
+    elif r == 12:
+        return (-x, z, y)
+    elif r == 13:
+        return (-z, -x, y)
+    elif r == 14:
+        return (x, -z, y)
+    elif r == 15:
+        return (z, x, y)
+    elif r == 16:
+        return (-y, z, -x)
+    elif r == 17:
+        return (-y, -x, -z)
+    elif r == 18:
+        return (-y, -z, x)
+    elif r == 19:
+        return (-y, x, z)
+    elif r == 20:
+        return (-z, -y, -x)
+    elif r == 21:
+        return (x, -y, -z)
+    elif r == 22:
+        return (z, -y, x)
+    elif r == 23:
+        return (-x, -y, z)
+    else:
+        1/0
 
 
 # Maybe not needed -- a list probably
@@ -153,8 +230,13 @@ def find_overlapping_scanner(scanners, index, known_overlaps, config):
     1/0  # Every scanner is guaranteed to have some overlap
 
 
+def subvec3d(a, b):
+    ax, ay, az = a
+    bx, by, bz = b
+    return (ax-bx, ay-by, az-bz)
+
 def center(scanner, origin_beacon):
-    return [grid.subvec(beacon, origin_beacon) for beacon in scanner]
+    return [subvec3d(beacon, origin_beacon) for beacon in scanner]
 
 
 
@@ -254,6 +336,6 @@ if __name__ == '__main__':
         stats = pstats.Stats(pr)
         stats.sort_stats(pstats.SortKey.TIME)
         stats.print_stats()
-        # stats.dump_stats(filename='myprof.prof')
+        stats.dump_stats(filename='myprof.prof')
     else:
         main()
