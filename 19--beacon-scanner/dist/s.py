@@ -2,6 +2,9 @@ import fileinput, collections, collections as cl, itertools, itertools as it, ma
 from grid import gridsource as grid, gridcustom # *, gridsource, gridcardinal, gridplane
 from util import *
 from matmul import matmul
+import cProfile
+import pstats
+PROFILE = True
 def trace(f):
     def traced(*args, **kwargs):
         result = f(*args, **kwargs)
@@ -201,4 +204,12 @@ def generate_rotations3d():
     m = matmul(m, mX)
     generate_rotations2d(m, mY, end='')
 if __name__ == '__main__':
-    main()
+    if PROFILE:
+        with cProfile.Profile() as pr:
+            main()
+        stats = pstats.Stats(pr)
+        stats.sort_stats(pstats.SortKey.TIME)
+        stats.print_stats()
+        # stats.dump_stats(filename='myprof.prof')
+    else:
+        main()
