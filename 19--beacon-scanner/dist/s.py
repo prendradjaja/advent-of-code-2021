@@ -4,7 +4,7 @@ from util import *
 from matmul import matmul
 import cProfile
 import pstats
-PROFILE = True
+PROFILE = False
 def trace(f):
     def traced(*args, **kwargs):
         result = f(*args, **kwargs)
@@ -58,11 +58,12 @@ def main():
     scanners = [parse_section(s) for s in sections]
     dimensions = len(scanners[0][0])
     if dimensions == 2:
-        config = obj(
-            overlap_needed = 3,
-            rotate = rotate2d,
-            count_rotations = 4,
-        )
+        1/0  # can't do 2dim now
+        # config = obj(
+        #     overlap_needed = 3,
+        #     rotate = rotate2d,
+        #     count_rotations = 4,
+        # )
     elif dimensions == 3:
         config = obj(
             overlap_needed = 12,
@@ -72,8 +73,52 @@ def main():
     else:
         1/0  # invalid dim
     # print(find_overlap_of_scanners(scanners[0], scanners[1], config))
-    print(find_overlapping_scanner(scanners, 0, [], config))
-    print(find_overlapping_scanner(scanners, 1, [0, 3], config))
+    # print(find_overlapping_scanner(scanners, 0, [], config))
+    # print(find_overlapping_scanner(scanners, 1, [0, 3], config))
+    visited = set()
+    g = Graph()
+    try:
+        dfs(0, None, scanners, config, g, visited)
+    except SearchDone:
+        print('done')
+class Graph:
+    def __init__(self):
+        self.vertices = set()
+        self.neighbors = collections.defaultdict(set)
+    def add_vertex(self, v):
+        self.vertices.add(v)
+    def add_edge(self, v, w):
+        self.add_vertex(v)
+        self.add_vertex(w)
+        self.neighbors[v].add(w)
+        self.neighbors[w].add(v)
+# (first set every visited flag to false)
+def dfs(u, parent, scanners, config, g, visited):
+    # if parent:
+    #     g.add_edge(u, parent)
+    visited.add(u)
+    for v in neighbors(u, scanners, config, g):
+        if v not in visited:
+            dfs(v, u, scanners, config, g, visited)
+def neighbors(u, scanners, config, g):
+    known_overlaps = list(g.neighbors[u])
+    known_no_overlaps = []
+    while True:
+        has_overlap, *details = find_overlapping_scanner(scanners, u, known_overlaps + known_no_overlaps, config)
+        if has_overlap:
+            print(details, u)
+            neighbor, *details, new_no_overlaps = details
+            known_no_overlaps.extend(new_no_overlaps)
+            known_overlaps.append(neighbor)
+            g.add_edge(u, neighbor)
+            if len(g.vertices) == len(scanners):
+                raise SearchDone
+            yield neighbor
+            known_overlaps = list(set(known_overlaps) | set(g.neighbors[u]))
+        else:
+            break
+class SearchDone(Exception):
+    pass
 def parse_section(section):
     section = section.split('\n')[1:]
     result = []
@@ -88,50 +133,129 @@ def rotate2d(point, r):
     '''
     return to_tuple(matmul([point], rotations2d[r]))
     # return matmul([point], rotations2d[r])[0]
+rotators = {
+    0:  lambda point: (point[0], point[1], point[2]),
+    1:  lambda point: (point[2], point[1], -point[0]),
+    2:  lambda point: (-point[0], point[1], -point[2]),
+    3:  lambda point: (-point[2], point[1], point[0]),
+    4:  lambda point: (point[0], point[2], -point[1]),
+    5:  lambda point: (point[2], -point[0], -point[1]),
+    6:  lambda point: (-point[0], -point[2], -point[1]),
+    7:  lambda point: (-point[2], point[0], -point[1]),
+    8:  lambda point: (point[1], point[2], point[0]),
+    9:  lambda point: (point[1], -point[0], point[2]),
+    10: lambda point: (point[1], -point[2], -point[0]),
+    11: lambda point: (point[1], point[0], -point[2]),
+    12: lambda point: (-point[0], point[2], point[1]),
+    13: lambda point: (-point[2], -point[0], point[1]),
+    14: lambda point: (point[0], -point[2], point[1]),
+    15: lambda point: (point[2], point[0], point[1]),
+    16: lambda point: (-point[1], point[2], -point[0]),
+    17: lambda point: (-point[1], -point[0], -point[2]),
+    18: lambda point: (-point[1], -point[2], point[0]),
+    19: lambda point: (-point[1], point[0], point[2]),
+    20: lambda point: (-point[2], -point[1], -point[0]),
+    21: lambda point: (point[0], -point[1], -point[2]),
+    22: lambda point: (point[2], -point[1], point[0]),
+    23: lambda point: (-point[0], -point[1], point[2]),
+}
 def rotate3d(point, r):
     '''
     r: Which rotation (0 - 23, inclusive)
     '''
-    return to_tuple(matmul([point], rotations3d[r]))
+    x, y, z = point
+    if r == 0:
+        return (x, y, z)
+    elif r == 1:
+        return (z, y, -x)
+    elif r == 2:
+        return (-x, y, -z)
+    elif r == 3:
+        return (-z, y, x)
+    elif r == 4:
+        return (x, z, -y)
+    elif r == 5:
+        return (z, -x, -y)
+    elif r == 6:
+        return (-x, -z, -y)
+    elif r == 7:
+        return (-z, x, -y)
+    elif r == 8:
+        return (y, z, x)
+    elif r == 9:
+        return (y, -x, z)
+    elif r == 10:
+        return (y, -z, -x)
+    elif r == 11:
+        return (y, x, -z)
+    elif r == 12:
+        return (-x, z, y)
+    elif r == 13:
+        return (-z, -x, y)
+    elif r == 14:
+        return (x, -z, y)
+    elif r == 15:
+        return (z, x, y)
+    elif r == 16:
+        return (-y, z, -x)
+    elif r == 17:
+        return (-y, -x, -z)
+    elif r == 18:
+        return (-y, -z, x)
+    elif r == 19:
+        return (-y, x, z)
+    elif r == 20:
+        return (-z, -y, -x)
+    elif r == 21:
+        return (x, -y, -z)
+    elif r == 22:
+        return (z, -y, x)
+    elif r == 23:
+        return (-x, -y, z)
+    else:
+        1/0
 # Maybe not needed -- a list probably
 def to_tuple(row_matrix):
     return tuple(row_matrix[0])
 # @trace
 def find_overlap_of_scanners(s1, s2, config):
-    rotate = config.rotate
+    # rotate = config.rotate
     count_rotations = config.count_rotations
     overlap_needed = config.overlap_needed
-    results = []
     for p1 in s1:
         for p2 in s2:
             for r in range(count_rotations):
+                rotate = rotators[r]
                 # Align p1 and p2
                 n1 = center(s1, p1)
                 n2 = center(s2, p2)
                 # Rotate n2 by r
-                n2 = [rotate(beacon, r) for beacon in n2]
+                n2 = [rotate(beacon) for beacon in n2]
                 # Check for overlap
                 if len(set(n1) & set(n2)) >= overlap_needed:
-                    results.append( (True, p1, p2, r) )
-    if results:
-        return results[0]
+                    return( (True, p1, p2, r) )
     return (False,)
-def find_overlapping_scanner(scanners, index, known_overlaps, config):
+def find_overlapping_scanner(scanners, index, skip, config):
     rotate = config.rotate
     count_rotations = config.count_rotations
     overlap_needed = config.overlap_needed
     scanner = scanners[index]
-    results = []
+    no_overlap = []
     for i, other_scanner in enumerate(scanners):
-        if i == index or i in known_overlaps:
+        if i == index or i in skip:
             continue
         has_overlap, *overlap_details = find_overlap_of_scanners(scanner, other_scanner, config)
         if has_overlap:
-            results.append( (i, *overlap_details) )
-    return results[0]
-    1/0  # Every scanner is guaranteed to have some overlap
+            return( (True, i, *overlap_details, no_overlap) )
+        else:
+            no_overlap.append(i)
+    return (False,)
+def subvec3d(a, b):
+    ax, ay, az = a
+    bx, by, bz = b
+    return (ax-bx, ay-by, az-bz)
 def center(scanner, origin_beacon):
-    return [grid.subvec(beacon, origin_beacon) for beacon in scanner]
+    return [subvec3d(beacon, origin_beacon) for beacon in scanner]
 def showmat(m, *, trailing_comma='', end='\n'):
     '''
     >>> m = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -210,6 +334,6 @@ if __name__ == '__main__':
         stats = pstats.Stats(pr)
         stats.sort_stats(pstats.SortKey.TIME)
         stats.print_stats()
-        # stats.dump_stats(filename='myprof.prof')
+        stats.dump_stats(filename='myprof.prof')
     else:
         main()

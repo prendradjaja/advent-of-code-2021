@@ -80,8 +80,66 @@ def main():
         1/0  # invalid dim
 
     # print(find_overlap_of_scanners(scanners[0], scanners[1], config))
-    print(find_overlapping_scanner(scanners, 0, [], config))
-    print(find_overlapping_scanner(scanners, 1, [0, 3], config))
+    # print(find_overlapping_scanner(scanners, 0, [], config))
+    # print(find_overlapping_scanner(scanners, 1, [0, 3], config))
+
+    visited = set()
+    g = Graph()
+    try:
+        dfs(0, None, scanners, config, g, visited)
+    except SearchDone:
+        print('done')
+
+
+class Graph:
+    def __init__(self):
+        self.vertices = set()
+        self.neighbors = collections.defaultdict(set)
+
+
+    def add_vertex(self, v):
+        self.vertices.add(v)
+
+
+    def add_edge(self, v, w):
+        self.add_vertex(v)
+        self.add_vertex(w)
+        self.neighbors[v].add(w)
+        self.neighbors[w].add(v)
+
+
+# (first set every visited flag to false)
+def dfs(u, parent, scanners, config, g, visited):
+    # if parent:
+    #     g.add_edge(u, parent)
+    visited.add(u)
+    for v in neighbors(u, scanners, config, g):
+        if v not in visited:
+            dfs(v, u, scanners, config, g, visited)
+
+
+def neighbors(u, scanners, config, g):
+    known_overlaps = list(g.neighbors[u])
+    known_no_overlaps = []
+    while True:
+        has_overlap, *details = find_overlapping_scanner(scanners, u, known_overlaps + known_no_overlaps, config)
+        if has_overlap:
+            print(details, u)
+            neighbor, *details, new_no_overlaps = details
+            known_no_overlaps.extend(new_no_overlaps)
+            known_overlaps.append(neighbor)
+            g.add_edge(u, neighbor)
+            if len(g.vertices) == len(scanners):
+                raise SearchDone
+            yield neighbor
+            known_overlaps = list(set(known_overlaps) | set(g.neighbors[u]))
+        else:
+            break
+
+
+class SearchDone(Exception):
+    pass
+
 
 
 def parse_section(section):
@@ -212,19 +270,22 @@ def find_overlap_of_scanners(s1, s2, config):
     return (False,)
 
 
-def find_overlapping_scanner(scanners, index, known_overlaps, config):
+def find_overlapping_scanner(scanners, index, skip, config):
     rotate = config.rotate
     count_rotations = config.count_rotations
     overlap_needed = config.overlap_needed
 
     scanner = scanners[index]
+    no_overlap = []
     for i, other_scanner in enumerate(scanners):
-        if i == index or i in known_overlaps:
+        if i == index or i in skip:
             continue
         has_overlap, *overlap_details = find_overlap_of_scanners(scanner, other_scanner, config)
         if has_overlap:
-            return( (i, *overlap_details) )
-    1/0  # Every scanner is guaranteed to have some overlap
+            return( (True, i, *overlap_details, no_overlap) )
+        else:
+            no_overlap.append(i)
+    return (False,)
 
 
 def subvec3d(a, b):
