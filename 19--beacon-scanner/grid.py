@@ -74,6 +74,10 @@ def _make_grid_library(names, rotdir):
             return sum(abs(x) for x in vec)
 
         @staticmethod
+        def manhattan(vec1, vec2):
+            return sum(abs(x - y) for x, y in zip(vec1, vec2))
+
+        @staticmethod
         def rot(direction, rotation):
             assert rotation in ['L', 'R']
             # return clazz.dirs[(clazz.dirs.index(direction) + (rotdir if rotation == 'R' else -rotdir)) % 4]
