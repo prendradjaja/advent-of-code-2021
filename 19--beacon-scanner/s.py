@@ -195,7 +195,6 @@ def find_overlap_of_scanners(s1, s2, config):
     # rotate = config.rotate
     count_rotations = config.count_rotations
     overlap_needed = config.overlap_needed
-    results = []
     for p1 in s1:
         for p2 in s2:
             for r in range(count_rotations):
@@ -209,9 +208,7 @@ def find_overlap_of_scanners(s1, s2, config):
 
                 # Check for overlap
                 if len(set(n1) & set(n2)) >= overlap_needed:
-                    results.append( (True, p1, p2, r) )
-    if results:
-        return results[0]
+                    return( (True, p1, p2, r) )
     return (False,)
 
 
@@ -221,14 +218,12 @@ def find_overlapping_scanner(scanners, index, known_overlaps, config):
     overlap_needed = config.overlap_needed
 
     scanner = scanners[index]
-    results = []
     for i, other_scanner in enumerate(scanners):
         if i == index or i in known_overlaps:
             continue
         has_overlap, *overlap_details = find_overlap_of_scanners(scanner, other_scanner, config)
         if has_overlap:
-            results.append( (i, *overlap_details) )
-    return results[0]
+            return( (i, *overlap_details) )
     1/0  # Every scanner is guaranteed to have some overlap
 
 
