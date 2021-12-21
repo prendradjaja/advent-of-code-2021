@@ -64,11 +64,12 @@ def main():
     scanners = [parse_section(s) for s in sections]
     dimensions = len(scanners[0][0])
     if dimensions == 2:
-        config = obj(
-            overlap_needed = 3,
-            rotate = rotate2d,
-            count_rotations = 4,
-        )
+        1/0  # can't do 2dim now
+        # config = obj(
+        #     overlap_needed = 3,
+        #     rotate = rotate2d,
+        #     count_rotations = 4,
+        # )
     elif dimensions == 3:
         config = obj(
             overlap_needed = 12,
