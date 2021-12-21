@@ -1,0 +1,8 @@
+Bug:
+
+  - if scores[0] > MAX_SCORE:
+  + if scores[0] >= MAX_SCORE:
+        return [1, 0]
+  - elif scores[1] > MAX_SCORE:
+  + elif scores[1] >= MAX_SCORE:
+        return [0, 1]
