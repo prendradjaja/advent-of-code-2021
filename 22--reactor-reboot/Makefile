@@ -10,9 +10,11 @@
 
 SHELL=/bin/bash
 
+# run:
+# 	@mkdir -p dist && pyxcompile s.py > dist/s.py  # This line is not necessary to run, but you'll need the compiled file if you want to debug a stacktrace
+# 	@pyx s.py
 run:
-	@mkdir -p dist && pyxcompile s.py > dist/s.py  # This line is not necessary to run, but you'll need the compiled file if you want to debug a stacktrace
-	@pyx s.py
+	@python3 s.py
 
 # test:
 # 	clear
@@ -28,6 +30,8 @@ test:
 copy-last:
 	pyx s.py | tee >(tail -n1 | pbcopy)
 
+# example:
+# 	@mkdir -p dist && pyxcompile s.py > dist/s.py  # This line is not necessary to run, but you'll need the compiled file if you want to debug a stacktrace
+# 	@pyx s.py example
 example:
-	@mkdir -p dist && pyxcompile s.py > dist/s.py  # This line is not necessary to run, but you'll need the compiled file if you want to debug a stacktrace
-	@pyx s.py example
+	@python3 s.py example

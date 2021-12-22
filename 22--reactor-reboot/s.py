@@ -11,22 +11,29 @@ from interval_overlap import interval_overlap
 def main():
     f = open(sys.argv[-1] if len(sys.argv) > 1 and sys.argv[-1] != '-' else 'in')
     lines = [l.rstrip('\n') for l in f]
-    on = set()
-    for line in lines:
+    on_regions = []
+    for i, line in enumerate(lines):
+        print('processing line', i)
         cmd, *region = parse_line(line)
         xlo, xhi, ylo, yhi, zlo, zhi = region
-        if not excludes_initialization_area(region):
-            for x in range(xlo, xhi+1):
-                for y in range(ylo, yhi+1):
-                    for z in range(zlo, zhi+1):
-                        pos = x,y,z
-                        if cmd == 'on':
-                            on.add(pos)
-                        elif cmd == 'off':
-                            on.discard(pos)
-                        else:
-                            1/0
-    print(len(on))
+        if True:
+        # if not excludes_initialization_area(region):
+            region = ((xlo, xhi), (ylo, yhi), (zlo, zhi))
+            if cmd == 'on':
+                to_add = [region]
+                # to_add = flatten([region_subtract(r, existing) for r in to_add for existing in on_regions])
+                for existing in on_regions:
+                    to_add = flatten([region_subtract(r, existing) for r in to_add])
+                on_regions.extend(to_add)
+            elif cmd == 'off':
+                on_regions = flatten([region_subtract(existing, region) for existing in on_regions])
+            else:
+                1/0  # unreachable
+        print('  count regions', len(on_regions))
+    # answer = len(on)
+    answer = sum(region_size(r) for r in on_regions)
+    print(answer)
+    # print(answer == 2758514936282235)
 
 
 def parse_line(line):
@@ -141,6 +148,17 @@ def in_region(region, point):
 
 def arbitrary_point(region):
     return tuple((lo + hi) / 2 for lo, hi in region)
+
+
+def region_size(region):
+    '''
+    >>> region_size( ((1, 3), (1, 3), (1, 3)) )
+    27
+    '''
+    result = 1
+    for lo, hi in region:
+        result *= (hi - lo + 1)
+    return result
 
 
 
