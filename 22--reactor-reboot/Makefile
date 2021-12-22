@@ -14,11 +14,16 @@ run:
 	@mkdir -p dist && pyxcompile s.py > dist/s.py  # This line is not necessary to run, but you'll need the compiled file if you want to debug a stacktrace
 	@pyx s.py
 
+# test:
+# 	clear
+# 	mkdir -p dist
+# 	pyxcompile s.py > dist/s.py
+# 	python3 -m doctest dist/s.py
+
 test:
 	clear
-	mkdir -p dist
-	pyxcompile s.py > dist/s.py
-	python3 -m doctest dist/s.py
+	python3 -m doctest s.py
+	python3 -m doctest interval_overlap.py
 
 copy-last:
 	pyx s.py | tee >(tail -n1 | pbcopy)
