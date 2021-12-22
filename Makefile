@@ -24,4 +24,5 @@ copy-last:
 	pyx s.py | tee >(tail -n1 | pbcopy)
 
 example:
+	@mkdir -p dist && pyxcompile s.py > dist/s.py  # This line is not necessary to run, but you'll need the compiled file if you want to debug a stacktrace
 	@pyx s.py example
