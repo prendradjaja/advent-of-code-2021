@@ -126,21 +126,62 @@ def show(g, state):
         print(line)
 
 
-def generate_moves(g, state):
+def generate_moves(g, state, *, piece=None):
     results = []
+
     for start_alias, piece in state.items():
         start_pos = g.aliases[start_alias]
         for end_alias in reachable_aliased_positions(g, state, start_pos):
             if square_type(g, start_alias) == square_type(g, end_alias):
                 continue
+
+            piece_type = state[start_alias]
+
+            # Moving into a room
             if (
                 square_type(g, end_alias) == 'room'
-                and end_alias in 'abcd'
-                and deeper_square(end_alias) not in state
             ):
-                continue
+                # It's the wrong type
+                if piece_type != room_name_to_amphipod_type(end_alias):
+                    continue
+
+                # It's the right type, but there is a deeper square in the room...
+                elif end_alias in 'abcd':
+                    # ...which is unoccupied
+                    if deeper_square(end_alias) not in state:
+                        continue
+
+                    # ...which is occupied by an amphipod of the wrong type
+                    elif state[my_deeper_square] != piece_type:
+                        continue
+
+                    # ...which is occupied by an amphipod of the right type
+                    else:
+                        pass
+
+                # It's the right type, and there is no deeper square in the room
+                else:
+                    pass
+
+            # Moving into a hallway
+            else:
+                pass
+
             results.append( (start_alias, end_alias) )
     return results
+
+
+def room_name_to_amphipod_type(alias):
+    '''
+    >>> room_name_to_amphipod_type('b')
+    'B'
+    >>> room_name_to_amphipod_type('f')
+    'B'
+    '''
+    assert alias in 'abcdefgh'
+    if alias in 'efgh':
+        alias = 'abcd'['efgh'.index(alias)]
+    return alias.upper()
 
 
 def deeper_square(abcd):
