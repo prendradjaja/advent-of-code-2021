@@ -14,8 +14,7 @@ height = 5
 
 
 def main():
-    g = parse_layout()
-    state = parse_input(g)
+    g, state = parse_input()
 
     # movegen example
     del state['b']
@@ -97,10 +96,16 @@ def parse_layout():
     return g
 
 
-def parse_input(g):
-    f = open(sys.argv[1] if len(sys.argv) > 1 else 'in')
+def parse_input(inputstr=None):
+    g = parse_layout()
     state = {}
-    for r, line in enumerate(f.readlines()):
+    if not inputstr:
+        f = open(sys.argv[1] if len(sys.argv) > 1 else 'in')
+        lines = f.readlines()
+    else:
+        inputstr = inputstr.strip()
+        lines = inputstr.split('\n')
+    for r, line in enumerate(lines):
         line = line.rstrip('\n')
         for c, ch in enumerate(line):
             if ch in 'ABCD':
@@ -108,7 +113,7 @@ def parse_input(g):
                 if pos in g.vertices:
                     alias = g.vertices[pos].alias
                     state[alias] = ch
-    return state
+    return g, state
 
 
 def show(g, state):
