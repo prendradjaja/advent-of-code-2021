@@ -15,6 +15,7 @@ height = 5
 
 def main():
     g, state = parse_input()
+    show(g, state)
 
     # # movegen example
     # del state['b']
@@ -25,23 +26,42 @@ def main():
 
     def bfs(state):
         state_hashable = to_hashable(state)
+        parents[state_hashable] = None
         visited.add(state_hashable)
         h = [(0, state_hashable)]
         heapq.heapify(h)
+        i = 0
+        show_every = 1000
         while h:
             cumulative_cost, state_hashable = heapq.heappop(h)
-            # print('...', cumulative_cost)
+            i += 1
+            if i % show_every == 0:
+                print('...', i // show_every, cumulative_cost)
             state = from_hashable(state_hashable)
             if is_goal(state):
-                print(cumulative_cost)
+                print(cumulative_cost, f'({i} states searched)')
+                show(g, state)
+                # show_steps(state_hashable, parents, g)
                 exit()
             for v, move in neighbors(g, state):
                 v_hashable = to_hashable(v)
                 if v_hashable not in visited:
+                    parents[v_hashable] = state_hashable
                     visited.add(v_hashable)
                     heapq.heappush(h, (edge_cost(g, move, state) + cumulative_cost, v_hashable))
     visited = set()
+    parents = {}
     bfs(state)
+
+
+def show_steps(state_hashable, parents, g):
+    states = []
+    while state_hashable:
+        states.append(from_hashable(state_hashable))
+        state_hashable = parents[state_hashable]
+    states = states[::-1]
+    for state in states:
+        show(g, state)
 
 
 
