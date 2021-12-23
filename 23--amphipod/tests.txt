@@ -1,4 +1,4 @@
->>> from s import generate_moves, parse_input
+>>> from s import generate_moves, parse_input, show, apply_move
 >>> def generate_moves_from(start, g, state):
 ...    return ''.join(sorted(e for s, e in generate_moves(g, state) if s == start))
 
@@ -100,3 +100,130 @@ Won't leave home if already in there with a friend
 ... ''')
 >>> generate_moves_from('a', g, state)
 ''
+
+The full example --------------------------------------------------------------
+
+>>> apply_move.total
+0
+
+>>> g, state = parse_input('''
+... #############
+... #...........#
+... ###B#C#B#D###
+...   #A#D#C#A#
+...   #########
+... ''')
+
+>>> move = ('c', '2')
+>>> move in generate_moves(g, state)
+True
+>>> apply_move(g, state, move)
+40
+>>> show(g, state, with_border=True)
+#############
+#...B.......#
+###B#C#.#D###
+  #A#D#C#A#
+  #########
+
+TODO Move directly from one room to another
+>>> move = ('b', '3')
+>>> move in generate_moves(g, state)
+True
+>>> apply_move(g, state, move)
+200
+>>> move = ('3', 'c')
+>>> move in generate_moves(g, state)
+True
+>>> apply_move(g, state, move)
+200
+>>> show(g, state, with_border=True)
+#############
+#...B.......#
+###B#.#C#D###
+  #A#D#C#A#
+  #########
+
+>>> move = ('f', '3')
+>>> move in generate_moves(g, state)
+True
+>>> apply_move(g, state, move)
+3000
+>>> move = ('2', 'f')
+>>> move in generate_moves(g, state)
+True
+>>> apply_move(g, state, move)
+30
+>>> show(g, state, with_border=True)
+#############
+#.....D.....#
+###B#.#C#D###
+  #A#B#C#A#
+  #########
+
+TODO Move directly from one room to another
+>>> move = ('a', '2')
+>>> move in generate_moves(g, state)
+True
+>>> apply_move(g, state, move)
+20
+>>> move = ('2', 'b')
+>>> move in generate_moves(g, state)
+True
+>>> apply_move(g, state, move)
+20
+>>> show(g, state, with_border=True)
+#############
+#.....D.....#
+###.#B#C#D###
+  #A#B#C#A#
+  #########
+
+>>> move = ('d', '4')
+>>> move in generate_moves(g, state)
+True
+>>> apply_move(g, state, move)
+2000
+>>> move = ('h', '5')
+>>> move in generate_moves(g, state)
+True
+>>> apply_move(g, state, move)
+3
+>>> show(g, state, with_border=True)
+#############
+#.....D.D.A.#
+###.#B#C#.###
+  #A#B#C#.#
+  #########
+
+>>> move = ('4', 'h')
+>>> move in generate_moves(g, state)
+True
+>>> apply_move(g, state, move)
+3000
+>>> move = ('3', 'd')
+>>> move in generate_moves(g, state)
+True
+>>> apply_move(g, state, move)
+4000
+>>> show(g, state, with_border=True)
+#############
+#.........A.#
+###.#B#C#D###
+  #A#B#C#D#
+  #########
+
+>>> move = ('5', 'a')
+>>> move in generate_moves(g, state)
+True
+>>> apply_move(g, state, move)
+8
+>>> show(g, state, with_border=True)
+#############
+#...........#
+###A#B#C#D###
+  #A#B#C#D#
+  #########
+
+>>> apply_move.total
+12521

@@ -12,6 +12,9 @@ import heapq
 width = 13
 height = 5
 
+border = [ (0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (1, 0), (1, 12), (2, 0), (2, 1), (2, 2), (2, 4), (2, 6), (2, 8), (2, 10), (2, 11), (2, 12), (3, 2), (3, 4), (3, 6), (3, 8), (3, 10), (4, 2), (4, 3), (4, 4), (4, 5), (4, 6), (4, 7), (4, 8), (4, 9), (4, 10), ]
+
+
 
 def main():
     g, state = parse_input()
@@ -84,11 +87,22 @@ def edge_cost(g, move, state):
 
 def neighbors(g, state):
     for move in generate_moves(g, state):
-        start, end = move
         new_state = dict(state)
-        new_state[end] = new_state[start]
-        del new_state[start]
+        apply_move(g, new_state, move)
         yield new_state, move
+
+
+def apply_move(g, state, move):
+    '''
+    Apply MOVE, mutating STATE and returning cost
+    '''
+    cost = edge_cost(g, move, state)
+    start, end = move
+    state[end] = state[start]
+    del state[start]
+    apply_move.total += cost
+    return cost
+apply_move.total = 0
 
 
 def to_hashable(state):
@@ -170,7 +184,7 @@ def parse_input(inputstr=None):
     return g, state
 
 
-def show(g, state):
+def show(g, state, *, with_border=False):
     for r in range(height):
         line = ''
         for c in range(width):
@@ -180,8 +194,11 @@ def show(g, state):
                 line += state[alias]
             elif pos in g.vertices:
                 line += g.vertices[pos].type
+            elif with_border and pos in border:
+                line += '#'
             else:
                 line += ' '
+        line = line.rstrip(' ')
         print(line)
 
 
