@@ -1,6 +1,7 @@
 import fileinput, collections, collections as cl, itertools, itertools as it, math, random, sys, re, string, functools
 from grid import gridsource as grid, gridcustom # *, gridsource, gridcardinal, gridplane
 from util import *
+import heapq
 
 
 # type Pos = (r: int, c: int)
@@ -22,6 +23,47 @@ def main():
     state['3'] = 'C'
     show(g, state)
     print(generate_moves(g, state))
+
+    # def bfs(state):
+    #     visited.add(to_hashable(state))
+    #     h = [(0, state)]
+    #     heapq.heapify(h)
+    #     while h:
+    #         cumulative_cost, state = heapq.heappop(h)
+    #         if is_goal(state):
+    #             print(cumulative_cost)
+    #             exit()
+    #         for v in neighbors(state):
+    #             if to_hashable(v) not in visited:
+    #                 visited.add(v)
+    #                 heapq.heappush(h, (edge_cost + cumulative_cost, v))
+    # visited = set()
+    # bfs(state)
+
+
+
+def to_hashable(state):
+    return tuple(sorted(state.items()))
+
+
+def is_goal(state):
+    return (
+        '0' not in state and
+        '1' not in state and
+        '2' not in state and
+        '3' not in state and
+        '4' not in state and
+        '5' not in state and
+        '6' not in state and
+        state['a'] == 'A' and
+        state['b'] == 'B' and
+        state['c'] == 'C' and
+        state['d'] == 'D' and
+        state['e'] == 'A' and
+        state['f'] == 'B' and
+        state['g'] == 'C' and
+        state['h'] == 'D'
+    )
 
 
 def parse_layout():
