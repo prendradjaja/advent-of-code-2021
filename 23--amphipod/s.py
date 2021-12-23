@@ -131,7 +131,7 @@ def show(g, state):
         print(line)
 
 
-def generate_moves(g, state, *, piece=None):
+def generate_moves(g, state):
     results = []
 
     for start_alias, piece in state.items():
@@ -170,7 +170,19 @@ def generate_moves(g, state, *, piece=None):
 
             # Moving into a hallway
             else:
-                pass
+
+                # It's already home...
+                if room_name_to_amphipod_type(start_alias) == piece_type:
+
+                    my_deeper_square = deeper_square(start_alias) if start_alias in 'abcd' else None
+
+                    # ...and in the deepest position
+                    if start_alias in 'efgh':
+                        continue
+
+                    # ...and the deeper position is occupied by an amphipod of the same (right) type
+                    elif my_deeper_square in state and state[my_deeper_square] == piece_type:
+                        continue
 
             results.append( (start_alias, end_alias) )
     return results
