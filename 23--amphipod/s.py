@@ -16,33 +16,67 @@ height = 5
 def main():
     g, state = parse_input()
 
-    # movegen example
-    del state['b']
-    # del state['f']
-    state['3'] = 'C'
-    show(g, state)
-    print(generate_moves(g, state))
+    # # movegen example
+    # del state['b']
+    # # del state['f']
+    # state['3'] = 'C'
+    # show(g, state)
+    # print(generate_moves(g, state))
 
-    # def bfs(state):
-    #     visited.add(to_hashable(state))
-    #     h = [(0, state)]
-    #     heapq.heapify(h)
-    #     while h:
-    #         cumulative_cost, state = heapq.heappop(h)
-    #         if is_goal(state):
-    #             print(cumulative_cost)
-    #             exit()
-    #         for v in neighbors(state):
-    #             if to_hashable(v) not in visited:
-    #                 visited.add(v)
-    #                 heapq.heappush(h, (edge_cost + cumulative_cost, v))
-    # visited = set()
-    # bfs(state)
+    def bfs(state):
+        state_hashable = to_hashable(state)
+        visited.add(state_hashable)
+        h = [(0, state_hashable)]
+        heapq.heapify(h)
+        while h:
+            cumulative_cost, state_hashable = heapq.heappop(h)
+            # print('...', cumulative_cost)
+            state = from_hashable(state_hashable)
+            if is_goal(state):
+                print(cumulative_cost)
+                exit()
+            for v, move in neighbors(g, state):
+                v_hashable = to_hashable(v)
+                if v_hashable not in visited:
+                    visited.add(v_hashable)
+                    heapq.heappush(h, (edge_cost(g, move, state) + cumulative_cost, v_hashable))
+    visited = set()
+    bfs(state)
 
+
+
+def edge_cost(g, move, state):
+    '''
+    Given STATE, return the cost of making MOVE
+    '''
+    start_alias, end_alias = move
+    start_pos = g.aliases[start_alias]
+    end_pos = g.aliases[end_alias]
+    r1, c1 = start_pos
+    r2, c2 = end_pos
+
+    piece_type = state[start_alias]
+    cost_per_move = {'A': 1, 'B': 10, 'C': 100, 'D': 1000}[piece_type]
+
+    # Manhattan distance
+    return cost_per_move * (abs(r1 - r2) + abs(c1 - c2))
+
+
+def neighbors(g, state):
+    for move in generate_moves(g, state):
+        start, end = move
+        new_state = dict(state)
+        new_state[end] = new_state[start]
+        del new_state[start]
+        yield new_state, move
 
 
 def to_hashable(state):
     return tuple(sorted(state.items()))
+
+
+def from_hashable(state_hashable):
+    return {k: v for k, v in state_hashable}
 
 
 def is_goal(state):
