@@ -18,6 +18,7 @@ def main():
 
     # movegen example
     del state['b']
+    # del state['f']
     state['3'] = 'C'
     show(g, state)
     print(generate_moves(g, state))
@@ -88,9 +89,21 @@ def generate_moves(g, state):
     for start_alias, piece in state.items():
         start_pos = g.aliases[start_alias]
         for end_alias in reachable_aliased_positions(g, state, start_pos):
-            if square_type(g, start_alias) != square_type(g, end_alias):
-                results.append( (start_alias, end_alias) )
+            if square_type(g, start_alias) == square_type(g, end_alias):
+                continue
+            if (
+                square_type(g, end_alias) == 'room'
+                and end_alias in 'abcd'
+                and deeper_square(end_alias) not in state
+            ):
+                continue
+            results.append( (start_alias, end_alias) )
     return results
+
+
+def deeper_square(abcd):
+    assert abcd in 'abcd'
+    return 'efgh'['abcd'.index(abcd)]
 
 
 def square_type(g, alias):
