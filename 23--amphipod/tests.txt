@@ -1,0 +1,102 @@
+>>> from s import generate_moves, parse_input
+>>> def generate_moves_from(start, g, state):
+...    return ''.join(sorted(e for s, e in generate_moves(g, state) if s == start))
+
+Can move out of room
+>>> g, state = parse_input('''
+... #############
+... #...........#
+... ###B#C#B#D###
+...   #A#D#C#A#
+...   #########
+... ''')
+>>> generate_moves_from('b', g, state)
+'0123456'
+
+Can be blocked in the hallway
+>>> g, state = parse_input('''
+... #############
+... #.....B.....#
+... ###B#C#.#D###
+...   #A#D#C#A#
+...   #########
+... ''')
+>>> generate_moves_from('b', g, state)
+'012'
+
+Can be blocked from leaving a room
+>>> g, state = parse_input('''
+... #############
+... #.....B.....#
+... ###B#C#.#D###
+...   #A#D#C#A#
+...   #########
+... ''')
+>>> generate_moves_from('e', g, state)
+''
+
+From hallway, will not move to other squares in hallway
+>>> g, state = parse_input('''
+... #############
+... #.....B.....#
+... ###B#C#C#D###
+...   #A#D#.#A#
+...   #########
+... ''')
+>>> generate_moves_from('3', g, state)
+''
+
+Moving into a room: Goes to deepest square in the correct room
+>>> g, state = parse_input('''
+... #############
+... #.....B.....#
+... ###B#.#.#D###
+...   #A#.#.#A#
+...   #########
+... ''')
+>>> generate_moves_from('3', g, state)
+'f'
+
+Moving into a room: Won't enter if someone else (wrong type) is already thtere
+>>> g, state = parse_input('''
+... #############
+... #.....B.....#
+... ###B#.#.#D###
+...   #A#A#.#A#
+...   #########
+... ''')
+>>> generate_moves_from('3', g, state)
+''
+
+Moving into a room: Will enter if someone else (right type) is already hetre
+>>> g, state = parse_input('''
+... #############
+... #.....B.....#
+... ###B#.#.#D###
+...   #A#B#.#A#
+...   #########
+... ''')
+>>> generate_moves_from('3', g, state)
+'b'
+
+Won't leave home if in deepest position
+>>> g, state = parse_input('''
+... #############
+... #...........#
+... ###.#C#B#D###
+...   #A#D#C#A#
+...   #########
+... ''')
+>>> generate_moves_from('e', g, state)
+''
+
+Won't leave home if already in there with a friend
+>>> g, state = parse_input('''
+... #############
+... #...........#
+... ###A#C#B#D###
+...   #A#D#C#A#
+...   #########
+... ''')
+>>> generate_moves_from('a', g, state)
+''

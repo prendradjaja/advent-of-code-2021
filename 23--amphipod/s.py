@@ -152,6 +152,8 @@ def generate_moves(g, state):
 
                 # It's the right type, but there is a deeper square in the room...
                 elif end_alias in 'abcd':
+                    my_deeper_square = deeper_square(end_alias) if end_alias in 'abcd' else None
+
                     # ...which is unoccupied
                     if deeper_square(end_alias) not in state:
                         continue

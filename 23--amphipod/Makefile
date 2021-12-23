@@ -16,6 +16,7 @@ run:
 test:
 	clear
 	python3 -m doctest s.py
+	python3 -m doctest tests.txt
 
 copy-last:
 	python3 s.py | tee >(tail -n1 | pbcopy)
