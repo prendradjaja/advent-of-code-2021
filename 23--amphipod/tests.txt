@@ -1,4 +1,4 @@
->>> from s import generate_moves, parse_input, show, apply_move
+>>> from s import generate_moves, parse_input, show, apply_move, from_hashable
 >>> def generate_moves_from(start, g, state):
 ...    return ''.join(sorted(e for s, e in generate_moves(g, state) if s == start))
 
