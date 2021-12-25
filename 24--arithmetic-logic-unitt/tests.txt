@@ -1,0 +1,57 @@
+>>> from s import execute_program
+>>> execute_program('''
+... inp x
+... mul x -1
+... '''.strip().split('\n'),
+... 4)['x']
+-4
+
+>>> execute_program('''
+... inp z
+... inp x
+... mul z 3
+... eql z x
+... '''.strip().split('\n'),
+... 39)['z']
+1
+
+>>> execute_program('''
+... inp z
+... inp x
+... mul z 3
+... eql z x
+... '''.strip().split('\n'),
+... 38)['z']
+0
+
+>>> list(execute_program('''
+... inp w
+... add z w
+... mod z 2
+... div w 2
+... add y w
+... mod y 2
+... div w 2
+... add x w
+... mod x 2
+... div w 2
+... mod w 2
+... '''.strip().split('\n'),
+... 6).values())
+[0, 1, 1, 0]
+
+>>> list(execute_program('''
+... inp w
+... add z w
+... mod z 2
+... div w 2
+... add y w
+... mod y 2
+... div w 2
+... add x w
+... mod x 2
+... div w 2
+... mod w 2
+... '''.strip().split('\n'),
+... 7).values())
+[0, 1, 1, 1]
