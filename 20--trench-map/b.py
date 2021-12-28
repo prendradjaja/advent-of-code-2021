@@ -21,7 +21,7 @@ def main():
     assert set(rules) <= set('.#')
     assert len(rules) == 512
 
-    steps = 2
+    steps = 50
     padding = steps + 2  # Does just steps + 1 work?
     image = Image(raw_image, padding)
     for i in range(steps):
