@@ -1,0 +1,38 @@
+TODO These tests only check the number of subregions is correct, not what
+those subregions actually are.
+
+>>> from b import region_subtract
+
+aaaaa
+aaaaa
+aa***bb
+aa***bb
+  bbbbb
+>>> a = ((57, 60), (5, 9))
+>>> b = ((59, 61), (7, 11))
+>>> len(region_subtract(a, b))
+3
+
+aaaa
+aaaa  bbb
+>>> a = ((66, 67), (5, 8))
+>>> b = ((67, 67), (11, 13))
+>>> region_subtract(a, b)
+[((66, 67), (5, 8))]
+
+aaaaaaa
+aaaaaaa
+aa***aa  (b is entirely inside a)
+aa***aa
+aaaaaaa
+>>> a = ((73, 77), (5, 11))
+>>> b = ((75, 76), (7, 9))
+>>> len(region_subtract(a, b))
+8
+
+****  (b == a)
+****
+>>> a = ((82, 83), (5, 8))
+>>> b = a
+>>> len(region_subtract(a, b))
+0
