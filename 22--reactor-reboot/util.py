@@ -259,10 +259,6 @@ def rangelen(lst):
     return range(len(lst))
 
 
-def flatten(t):
-    return [item for sublist in t for item in sublist]
-
-
 # enumerate
 # ascii_lowercase ascii_lowercase
 # defaultdict namedtuple Counter _replace
